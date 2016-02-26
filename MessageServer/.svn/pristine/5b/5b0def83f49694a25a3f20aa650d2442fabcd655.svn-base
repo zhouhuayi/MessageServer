@@ -1,0 +1,105 @@
+package message.nettyServer.websocket;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.logging.Logger;
+
+import org.apache.log4j.spi.LoggerFactory;
+
+/***
+ * ie78可以使用websocket的关键
+ * 
+ * @author 张国浩
+ * @date 2015年10月19日 上午9:46:49
+ * @version 1.0
+ * @TODO QQ:5069506
+ */
+public class FlashPolicyServer {
+	private ServerSocket serverSocket;
+	private static Thread serverThread;
+	private int port;
+	private static boolean listening = true;
+
+
+	public FlashPolicyServer() {
+		this(843);
+	}
+
+	public FlashPolicyServer(int port) {
+		this.port = port;
+	}
+
+	public void start() {
+		try {
+			serverThread = new Thread(new Runnable() {
+				public void run() {
+					try {
+						serverSocket = new ServerSocket(port);
+						while (listening) {
+							final Socket socket = serverSocket.accept();
+							Thread t = new Thread(new Runnable() {
+								public void run() {
+									try {
+										socket.setSoTimeout(10000);
+										InputStream in = socket
+												.getInputStream();
+										byte[] buffer = new byte[23];
+										if (in.read(buffer) != -1
+												&& (new String(buffer,
+														"ISO-8859-1"))
+														.startsWith("<policy-file-request/>")) {
+											OutputStream out = socket
+													.getOutputStream();
+											byte[] bytes = ("<?xml version=\"1.0\"?>\n"
+													+ "<!DOCTYPE cross-domain-policy SYSTEM \"/xml/dtds/cross-domain-policy.dtd\">\n"
+													+ "<cross-domain-policy> \n"
+													+ "   <site-control permitted-cross-domain-policies=\"master-only\"/>\n"
+													+ "   <allow-access-from domain=\"*\" to-ports=\"*\" />\n"
+													+ "</cross-domain-policy>")
+													.getBytes("ISO-8859-1");
+											out.write(bytes);
+											out.write(0x00);
+											out.flush();
+											out.close();
+										} else {
+										}
+									} catch (SocketException e) {
+					
+									} catch (IOException e) {
+		
+									} finally {
+										try {
+											socket.close();
+										} catch (Exception ex2) {
+										}
+									}
+								}
+							});
+							t.start();
+						}
+					} catch (IOException ex) {
+					}
+				}
+			});
+			serverThread.start();
+		} catch (Exception ex) {
+	
+		}
+	}
+
+	public void stop() {
+		if (listening) {
+			listening = false;
+		}
+		if (!serverSocket.isClosed()) {
+			try {
+				serverSocket.close();
+			} catch (Exception ex) {
+			}
+		}
+	}
+}

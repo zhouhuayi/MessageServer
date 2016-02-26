@@ -1,0 +1,19 @@
+package message.server.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import message.db.bean.Room;
+import message.db.dao.RoomMapper;
+import message.server.IRoomServer;
+@Service("roomServer")
+public class RoomServerImpl implements  IRoomServer{
+	@Resource
+	private RoomMapper roomMapper;
+	public List<Room> findAll() {
+		return roomMapper.findAll();
+	}
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choose.Message.mapper.VoterRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.choose.Message.bean.VoterRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="VoterId" property="voterid" jdbcType="INTEGER" />
+    <result column="VoterPerson" property="voterperson" jdbcType="BIGINT" />
+    <result column="VoterTime" property="votertime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, VoterId, VoterPerson, VoterTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from voterrecord
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from voterrecord
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.choose.Message.bean.VoterRecord" >
+    insert into voterrecord (id, VoterId, VoterPerson, 
+      VoterTime)
+    values (#{id,jdbcType=INTEGER}, #{voterid,jdbcType=INTEGER}, #{voterperson,jdbcType=BIGINT}, 
+      #{votertime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.choose.Message.bean.VoterRecord" >
+    insert into voterrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="voterid != null" >
+        VoterId,
+      </if>
+      <if test="voterperson != null" >
+        VoterPerson,
+      </if>
+      <if test="votertime != null" >
+        VoterTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="voterid != null" >
+        #{voterid,jdbcType=INTEGER},
+      </if>
+      <if test="voterperson != null" >
+        #{voterperson,jdbcType=BIGINT},
+      </if>
+      <if test="votertime != null" >
+        #{votertime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choose.Message.bean.VoterRecord" >
+    update voterrecord
+    <set >
+      <if test="voterid != null" >
+        VoterId = #{voterid,jdbcType=INTEGER},
+      </if>
+      <if test="voterperson != null" >
+        VoterPerson = #{voterperson,jdbcType=BIGINT},
+      </if>
+      <if test="votertime != null" >
+        VoterTime = #{votertime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choose.Message.bean.VoterRecord" >
+    update voterrecord
+    set VoterId = #{voterid,jdbcType=INTEGER},
+      VoterPerson = #{voterperson,jdbcType=BIGINT},
+      VoterTime = #{votertime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

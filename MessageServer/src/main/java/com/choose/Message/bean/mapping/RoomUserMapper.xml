@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choose.Message.mapper.RoomUserMapper" >
+  <resultMap id="BaseResultMap" type="com.choose.Message.bean.RoomUser" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="roomUserLevel" property="roomuserlevel" jdbcType="INTEGER" />
+    <result column="roomId" property="roomid" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, roomUserLevel, roomId, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from roomuser
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from roomuser
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.choose.Message.bean.RoomUser" >
+    insert into roomuser (id, userId, roomUserLevel, 
+      roomId, state)
+    values (#{id,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{roomuserlevel,jdbcType=INTEGER}, 
+      #{roomid,jdbcType=INTEGER}, #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.choose.Message.bean.RoomUser" >
+    insert into roomuser
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="roomuserlevel != null" >
+        roomUserLevel,
+      </if>
+      <if test="roomid != null" >
+        roomId,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="roomuserlevel != null" >
+        #{roomuserlevel,jdbcType=INTEGER},
+      </if>
+      <if test="roomid != null" >
+        #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choose.Message.bean.RoomUser" >
+    update roomuser
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="roomuserlevel != null" >
+        roomUserLevel = #{roomuserlevel,jdbcType=INTEGER},
+      </if>
+      <if test="roomid != null" >
+        roomId = #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choose.Message.bean.RoomUser" >
+    update roomuser
+    set userId = #{userid,jdbcType=BIGINT},
+      roomUserLevel = #{roomuserlevel,jdbcType=INTEGER},
+      roomId = #{roomid,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

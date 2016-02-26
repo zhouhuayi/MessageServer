@@ -1,0 +1,30 @@
+package com.choose.Message.WebSocket.process;
+
+import io.netty.channel.ChannelHandlerContext;
+
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+
+/**
+ *Websocket消息处理中心
+ *@author 吴耀宗
+ *@date 2016/2/22
+ */
+public class MessageCenter {
+	private static final Logger logger = Logger.getLogger(MessageCenter.class.getName());
+	public static void setMessage(String msg, ChannelHandlerContext ctx){
+		msg=msg.replaceAll("\\s*", "");//空白替换
+		JSONObject jsonObject = new JSONObject(msg);
+		switch(jsonObject.get("type").toString()){
+		case "login":
+			
+			break;
+		default:
+			break;
+		}
+		
+		
+	}
+	
+	
+}

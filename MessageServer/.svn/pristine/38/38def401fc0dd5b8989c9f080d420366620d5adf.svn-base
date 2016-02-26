@@ -1,0 +1,109 @@
+package com.choose.Message.util;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import com.choose.Message.WebSocket.InitServer;
+import com.choose.Message.mapper.PrivateMessageMapper;
+import com.choose.Message.mapper.PublicMessageMapper;
+import com.choose.Message.pojo.MessagePojo;
+
+import redis.clients.jedis.Jedis;
+
+/**
+ * spring 的定时任务类
+ * 
+ * @author 周化益
+ *
+ */
+@Service
+public class SpringTask {
+	
+	/**
+	 * 定时消息与数据库进行同步
+	 */
+	public void doMessage() {
+		System.out.println("进入spring定时任务");
+//		Thread thread = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				addPrivateMessage();
+//			}
+//		});
+//		
+//		thread.start();
+		
+		Thread thread1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				addPublicMessage();
+			}
+		});
+		
+		thread1.start();
+	}
+	
+	/**
+	 * 将私聊消息同步到数据库中
+	 * 
+	 * @author 周化益
+	 */
+	public static void addPrivateMessage() {
+		PrivateMessageMapper privateMessageMapper = InitServer.context.getBean(PrivateMessageMapper.class);
+		
+		Jedis jedis = InitServer.jedis;
+		
+		Set<String> messageKey = jedis.keys(CommonUtil.getDateTime() + "_privateMessage*");
+		
+		List<Map<String, Object>> messageList = new ArrayList<Map<String, Object>>();
+		
+		for (String key : messageKey) {
+			List<String> redisMessageList = jedis.lrange(key, 0, -1);
+			for (String jsonStr : redisMessageList) {
+				Map<String, Object> messageMap = new HashMap<String, Object>();
+				JSONObject jsonData = new JSONObject(jsonStr);
+				messageMap = BeanConvertMap.jsonToMap(jsonData);
+				messageList.add(messageMap);
+			}
+		}
+		
+		MessagePojo messagePojo = new MessagePojo();
+		messagePojo.setAddListMap(messageList);
+		privateMessageMapper.bathAdd(messagePojo);
+	}
+	
+	/**
+	 * 将公聊消息同步到数据库中
+	 * 
+	 * @author 周化益
+	 */
+	public static void addPublicMessage() {
+		PublicMessageMapper publicMessageMapper = InitServer.context.getBean(PublicMessageMapper.class);
+		
+		Jedis jedis = InitServer.jedis;
+		
+		Set<String> messageKey = jedis.keys(CommonUtil.getDateTime() + "_publicMessage*");
+		
+		List<Map<String, Object>> messageList = new ArrayList<Map<String, Object>>();
+		
+		for (String key : messageKey) {
+			List<String> redisMessageList = jedis.lrange(key, 0, -1);
+			for (String jsonStr : redisMessageList) {
+				Map<String, Object> messageMap = new HashMap<String, Object>();
+				JSONObject jsonData = new JSONObject(jsonStr);
+				messageMap = BeanConvertMap.jsonToMap(jsonData);
+				messageList.add(messageMap);
+			}
+		}
+		
+		MessagePojo messagePojo = new MessagePojo();
+		messagePojo.setAddListMap(messageList);
+		publicMessageMapper.bathAdd(messagePojo);
+	}
+}

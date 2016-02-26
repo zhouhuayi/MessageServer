@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choose.Message.mapper.CommonMapper">
+	<select id="getMapListClass1" resultType="java.util.Map"
+		parameterType="com.choose.Message.util.Params">
+		select
+		<foreach collection="columns" item="column" separator=",">
+			${column}
+		</foreach>
+		from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size!=0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+		<if test="sortColumn != null">
+			order by ${sortColumn} ${sort}
+		</if>
+		<if test="end">
+			limit ${start},${end}
+		</if>
+	</select>
+
+	<select id="getMapClass1" resultType="java.util.Map"
+		parameterType="com.choose.Message.util.Params">
+		select
+		<foreach collection="columns" item="column" separator=",">
+			${column}
+		</foreach>
+		from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size > 0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getListMap1" resultType="java.util.Map"
+		parameterType="com.choose.Message.util.Params">
+		select
+		<foreach collection="columns" item="column" separator=",">
+			${column}
+		</foreach>
+		from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size > 0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getListObject1" resultType="Long"
+		parameterType="com.choose.Message.util.Params">
+		select
+		<foreach collection="columns" item="column" separator=",">
+			${column}
+		</foreach>
+		from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size!=0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getOneValue1" resultType="String"
+		parameterType="com.choose.Message.util.Params">
+		select
+		<foreach collection="columns" item="column" separator=",">
+			${column}
+		</foreach>
+		from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size!=0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getCount1" resultType="long"
+		parameterType="com.choose.Message.util.Params">
+		select count(*) from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size > 0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</select>
+
+	<insert id="add1" parameterType="com.choose.Message.util.Params"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into ${tables}
+		<foreach collection="insertMap.keys" item="k" index="index"
+			open="(" separator="," close=")">
+			<if test="null != insertMap[k]">${k}</if>
+		</foreach>
+		values
+		<foreach collection="insertMap.values" item="v" index="index"
+			open="(" separator="," close=")">
+			#{v}</foreach>
+	</insert>
+
+	<update id="update1" parameterType="com.choose.Message.util.Params">
+		update ${tables} set
+		<foreach collection="insertMap.keys" item="entryTemp"
+			separator=",">
+			<!-- 如果value可能为null需要针对可能为null的字段指定javaType或jdbcType -->
+			<!-- 如果value为空时可以被忽略，这里可以加入if的判断逻辑 -->
+			${entryTemp} = '${insertMap[entryTemp]}'
+		</foreach>
+		where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size > 0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</update>
+
+	<delete id="delete1" parameterType="com.choose.Message.util.Params">
+		delete from ${tables} where
+		<if test="null ==whereSql">
+			1=1
+		</if>
+		<if test="null != whereSql">
+			${whereSql}
+		</if>
+		<if test="null != paramList and paramList.size > 0">
+			<foreach collection="paramList" item="item" index="index">
+				<if test="null!=item.value">
+					${item.connSymbol} ${item.column} ${item.judgeSymbol}
+					<if test="item.judgeSymbol.equals('in')">
+						<foreach collection="item.value" item="columnValue" index="index"
+							open="(" separator="," close=")">
+							#{columnValue}
+						</foreach>
+					</if>
+
+					<if test="!item.judgeSymbol.equals('in')">
+						#{item.value}
+					</if>
+
+					<if test="null!=item.symbolEnd">
+						${item.symbolEnd}
+					</if>
+				</if>
+			</foreach>
+		</if>
+	</delete>
+
+
+
+	<select id="getMapListClass" resultType="java.util.Map">
+		${value}
+	</select>
+
+	<select id="getMapClass" resultType="java.util.Map">
+		${value}
+	</select>
+
+	<select id="getListObject" resultType="Long">
+		${value}
+	</select>
+
+	<select id="getOneValue" resultType="String">
+		${value}
+	</select>
+
+	<select id="getCount" parameterType="String" resultType="long">
+		${value}
+	</select>
+
+	<insert id="add" parameterType="com.choose.Message.util.Params">
+		${sql}
+	</insert>
+
+	<update id="update" parameterType="String">
+		${value}
+	</update>
+
+	<delete id="delete" parameterType="String">
+		${value}
+	</delete>
+</mapper>

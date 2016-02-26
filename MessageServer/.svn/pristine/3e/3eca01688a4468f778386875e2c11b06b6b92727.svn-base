@@ -1,0 +1,18 @@
+package message.server;
+
+import java.util.List;
+
+import message.db.bean.Room;
+
+/**
+ *房间相关操作服务层
+ *@author 吴耀宗
+ *@data 2016/2/21
+ */
+public interface IRoomServer {
+	/**
+	 * 查找所有房间
+	 * @return List<Room> 房间列表
+	 */
+	public List<Room> findAll();
+}

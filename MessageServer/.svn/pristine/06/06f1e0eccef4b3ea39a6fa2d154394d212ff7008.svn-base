@@ -1,0 +1,175 @@
+package com.choose.Message.util;
+
+import java.util.Map;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+/**
+ * redis缓存服务器公用类
+ * 
+ * @version 1.0
+ * @author 周化益
+ * @since 2016-02-15
+ */
+public class Redis {
+	//创建连接池
+	private static JedisPool pool = null;
+	
+	private static String ip = "192.168.0.131";
+	
+	private static String port = "8090";
+	
+	/**
+	 * 获取连接池
+	 * 
+	 * @author 周化益
+	 * @param ip IP地址
+	 * @param port 端口号
+	 * @return JedisPool
+	 */
+	public static JedisPool getPool(String ip, String port) {
+		if (pool == null) {
+			JedisPoolConfig config = new JedisPoolConfig();
+			//连接池最大使用连接数量
+			config.setMaxActive(500);
+			//连接池最大空闲 
+			config.setMaxIdle(5);
+			//连接等待时间
+			config.setMaxWait(1000 * 100);
+			//是否允许浏览器测试
+			config.setTestOnBorrow(true);
+			//初始化连接池
+			pool = new JedisPool(config, ip);
+		}
+		return pool;
+	}
+
+	/**
+	 * 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+	 * 
+	 * @param pool
+	 * @param redis
+	 */
+	public static void returnResource(JedisPool pool, Jedis redis) {
+		if (redis != null) {
+			pool.returnResource(redis);
+		}
+	}
+
+	/**
+	 * 锟斤拷取锟斤拷锟�
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static String get(String key) {
+		String value = null;
+
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			pool = getPool(ip,port);
+			jedis = pool.getResource();
+			value = jedis.get(key);
+		} catch (Exception e) {
+			// 锟酵凤拷redis锟斤拷锟斤拷
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+			returnResource(pool, jedis);
+		}
+		return value;
+	}
+
+	/**
+	 * 锟斤拷锟斤拷锟斤拷
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public static void set(String key, String value) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			pool = getPool(ip,port);
+			jedis = pool.getResource();
+			jedis.set(key, value);
+		} catch (Exception e) {
+			// 锟酵凤拷redis锟斤拷锟斤拷
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+			returnResource(pool, jedis);
+		}
+	}
+
+	/**
+	 * 锟斤拷锟斤拷锟斤拷
+	 * 
+	 * @param mapStr
+	 * @return
+	 */
+	public static void set(String key, Map<String, String> mapStr) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			pool = getPool(ip,port);
+			jedis = pool.getResource();
+			jedis.hmset(key, mapStr);
+		} catch (Exception e) {
+			// 锟酵凤拷redis锟斤拷锟斤拷
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+			returnResource(pool, jedis);
+		}
+	}
+
+	/**
+	 * 判断redis中是否存在对应的KEY
+	 * 
+	 * @author 周化益
+	 * @param mapStr
+	 * @return
+	 */
+	public static boolean exist(String key) {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		boolean bool = false;
+		try {
+			pool = getPool(ip,port);
+			jedis = pool.getResource();
+			bool = jedis.exists(key);
+		} catch (Exception e) {
+			// 锟酵凤拷redis锟斤拷锟斤拷
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+			returnResource(pool, jedis);
+		}
+		return bool;
+	}
+	
+	public static void outAllInfo() {
+		JedisPool pool = null;
+		Jedis jedis = null;
+		try {
+			pool = getPool(ip,port);
+			jedis = pool.getResource();
+			System.out.println(jedis.keys("*"));
+		} catch (Exception e) {
+			// 锟酵凤拷redis锟斤拷锟斤拷
+			pool.returnBrokenResource(jedis);
+			e.printStackTrace();
+		} finally {
+			// 锟斤拷锟斤拷锟斤拷锟斤拷锟接筹拷
+			returnResource(pool, jedis);
+		}
+	}
+}

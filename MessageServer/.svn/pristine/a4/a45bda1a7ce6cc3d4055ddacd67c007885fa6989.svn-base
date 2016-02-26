@@ -1,0 +1,20 @@
+package com.choose.Message.service;
+
+import org.json.JSONObject;
+
+/**
+ * 私聊信息逻辑处理接口
+ * 
+ * @author 周化益
+ *
+ */
+public interface PrivateMessageService {
+	/**
+	 * 发送私聊消息
+	 * 
+	 * @author 周化益
+	 * @param jsonObject 私聊的json数据
+	 * @return
+	 */
+	public JSONObject sendMessage(JSONObject jsonObject);
+}

@@ -1,0 +1,39 @@
+package message.data;
+
+import io.netty.channel.group.ChannelGroup;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import message.db.bean.Room;
+
+/**
+ * 链接存储类
+ *@author 吴耀宗
+ *@data 2016/2/21
+ */
+public class Connection {
+	/***
+	 * 登陆成所有连接
+	 * 根据连接ID查找用户ID
+	 * 用与多终端操作（发送消息）
+	 * map<连接ID,用户ID> 
+	 */
+	private static volatile Map<String, String> arrayMap=new HashMap<String, String>();
+	
+	/***
+	* 存储所有连接
+	* Map<用户ID,Map<连接ID，连接信息>>
+	*/
+	private static Map<String, Map<String, ClientType> > nodeCheck = new ConcurrentHashMap<String, Map<String,ClientType>>();
+	/**
+	 * 存储房间的链接
+	 * Map<房间ID,链接组>
+	 */
+	public static Map<String, ChannelGroup> roomMap = new HashMap<String, ChannelGroup>(); 
+	/***
+	 * 房间信息
+	 */
+	public static Map<String, Room> room=new HashMap<String, Room>();
+}

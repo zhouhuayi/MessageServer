@@ -1,0 +1,110 @@
+package com.choose.Message.WebSocket.process;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.json.JSONObject;
+
+import com.choose.Message.bean.User;
+import com.choose.Message.pojo.ClientType;
+import com.choose.Message.pojo.Connection;
+import com.choose.Message.pojo.RoomBean;
+import com.choose.Message.util.BeanConvertMap;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+
+/**
+ *用户信息处理(登录)
+ *@author 吴耀宗
+ *@date 2016/2/22
+ */
+public class UserOperation extends MessageCenter{
+	
+	/**
+	 *	用户登录 
+	 * @param jsonObject
+	 * @param ctx
+	 */
+	public synchronized static void userLogin(JSONObject jsonObject,ChannelHandlerContext ctx)
+	{
+		try {
+			String res="";
+			String loginSource=jsonObject.getString("loginResouce");//登陆来源
+			JSONObject obj=new JSONObject();
+			Map<String,Object> userMap = null;
+			userMap=BeanConvertMap.jsonToMap(jsonObject);
+			User user=userService.userLogin(userMap);
+			
+			if(user!=null){
+			switch(user.getState()){
+				case 0:
+				//登陆成功
+				obj.put("type","loginSuccess");
+				obj.put("userInfo",BeanConvertMap.ObjetcToJson(user));
+				res=obj.toString();
+				Map<String,ClientType> newClientMap=new HashMap<String,ClientType>();
+				newClientMap.put(loginSource, new ClientType(ctx.channel(),loginSource,"1"));
+				if(Connection.roomUserList.size()>0)
+				{
+					Map<String,ClientType> clientMap=Connection.nodeCheck.get(user.getId().toString());
+					
+					if(clientMap.size()>0)
+					{
+						
+						if(clientMap.containsKey(loginSource))
+						{
+							JSONObject objs=new JSONObject();
+							objs.accumulate("type","repeatLogin");
+							objs.accumulate("val","您的账号已在别的地方登陆,被迫下线!");
+							String msg=objs.toString();
+							TextWebSocketFrame tws = new TextWebSocketFrame(msg);
+							clientMap.get(loginSource).getChannel().writeAndFlush(tws);
+						Connection.nodeCheck.get(user.getId().toString()).put("loginSource",new ClientType());
+						Connection.roomUserList.remove(clientMap.get(loginSource).getChannel().id());//去除重复的链接
+						
+						}		
+						
+					}				
+				}
+				Connection.nodeCheck.put(user.getId().toString(), newClientMap);
+				Connection.roomUserList.put(ctx.channel().id().toString(), new RoomBean(null,BeanConvertMap.convertBean(user)));//添加链接
+				break;
+				case 1:
+				obj.accumulate("type","loginError");
+				obj.accumulate("val","用户名或密码错误");
+				res=obj.toString();	
+				break;
+				case 2:
+				obj.accumulate("type","loginError");
+				obj.accumulate("val","账号已被查封，请联系管理员");
+				res=obj.toString();
+				break;
+				default:
+				break;
+				}	
+			}else
+			{
+				obj.accumulate("type","loginError");
+				obj.accumulate("val","用户名或密码错误");
+				res=obj.toString();
+			}  
+			Logger.getLogger(MessageCenter.class.getName()).info("用户登录处理完毕，服务端发送消息:"+res);
+			TextWebSocketFrame tws = new TextWebSocketFrame(res);
+			ctx.channel().writeAndFlush(tws);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			JSONObject obj=new JSONObject();
+			obj.put("type","loginError");
+			obj.put("val","服务器繁忙，请稍后重试!!");
+			String res=obj.toString();
+			TextWebSocketFrame tws = new TextWebSocketFrame(res);
+			ctx.channel().writeAndFlush(tws);
+		}
+		
+	
+	
+	}
+}

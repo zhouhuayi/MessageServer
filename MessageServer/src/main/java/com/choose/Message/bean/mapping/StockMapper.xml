@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choose.Message.mapper.StockMapper" >
+  <resultMap id="BaseResultMap" type="com.choose.Message.bean.Stock" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="surplusStop" property="surplusstop" jdbcType="VARCHAR" />
+    <result column="stop" property="stop" jdbcType="VARCHAR" />
+    <result column="offerType" property="offertype" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="recommendedPerson" property="recommendedperson" jdbcType="VARCHAR" />
+    <result column="times" property="times" jdbcType="TIMESTAMP" />
+    <result column="starLevel" property="starlevel" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.choose.Message.bean.Stock" extends="BaseResultMap" >
+    <result column="recommendedReason" property="recommendedreason" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, code, type, surplusStop, stop, offerType, state, recommendedPerson, times, 
+    starLevel
+  </sql>
+  <sql id="Blob_Column_List" >
+    recommendedReason
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from stock
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from stock
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.choose.Message.bean.Stock" >
+    insert into stock (id, name, code, 
+      type, surplusStop, stop, 
+      offerType, state, recommendedPerson, 
+      times, starLevel, recommendedReason
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{surplusstop,jdbcType=VARCHAR}, #{stop,jdbcType=VARCHAR}, 
+      #{offertype,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{recommendedperson,jdbcType=VARCHAR}, 
+      #{times,jdbcType=TIMESTAMP}, #{starlevel,jdbcType=INTEGER}, #{recommendedreason,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.choose.Message.bean.Stock" >
+    insert into stock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="surplusstop != null" >
+        surplusStop,
+      </if>
+      <if test="stop != null" >
+        stop,
+      </if>
+      <if test="offertype != null" >
+        offerType,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="recommendedperson != null" >
+        recommendedPerson,
+      </if>
+      <if test="times != null" >
+        times,
+      </if>
+      <if test="starlevel != null" >
+        starLevel,
+      </if>
+      <if test="recommendedreason != null" >
+        recommendedReason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="surplusstop != null" >
+        #{surplusstop,jdbcType=VARCHAR},
+      </if>
+      <if test="stop != null" >
+        #{stop,jdbcType=VARCHAR},
+      </if>
+      <if test="offertype != null" >
+        #{offertype,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recommendedperson != null" >
+        #{recommendedperson,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        #{times,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starlevel != null" >
+        #{starlevel,jdbcType=INTEGER},
+      </if>
+      <if test="recommendedreason != null" >
+        #{recommendedreason,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choose.Message.bean.Stock" >
+    update stock
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="surplusstop != null" >
+        surplusStop = #{surplusstop,jdbcType=VARCHAR},
+      </if>
+      <if test="stop != null" >
+        stop = #{stop,jdbcType=VARCHAR},
+      </if>
+      <if test="offertype != null" >
+        offerType = #{offertype,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recommendedperson != null" >
+        recommendedPerson = #{recommendedperson,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null" >
+        times = #{times,jdbcType=TIMESTAMP},
+      </if>
+      <if test="starlevel != null" >
+        starLevel = #{starlevel,jdbcType=INTEGER},
+      </if>
+      <if test="recommendedreason != null" >
+        recommendedReason = #{recommendedreason,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.choose.Message.bean.Stock" >
+    update stock
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      surplusStop = #{surplusstop,jdbcType=VARCHAR},
+      stop = #{stop,jdbcType=VARCHAR},
+      offerType = #{offertype,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      recommendedPerson = #{recommendedperson,jdbcType=VARCHAR},
+      times = #{times,jdbcType=TIMESTAMP},
+      starLevel = #{starlevel,jdbcType=INTEGER},
+      recommendedReason = #{recommendedreason,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choose.Message.bean.Stock" >
+    update stock
+    set name = #{name,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      surplusStop = #{surplusstop,jdbcType=VARCHAR},
+      stop = #{stop,jdbcType=VARCHAR},
+      offerType = #{offertype,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      recommendedPerson = #{recommendedperson,jdbcType=VARCHAR},
+      times = #{times,jdbcType=TIMESTAMP},
+      starLevel = #{starlevel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

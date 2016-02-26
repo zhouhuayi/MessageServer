@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.choose.Message.mapper.PrivateMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.choose.Message.bean.PrivateMessage" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="sendPerson" property="sendperson" jdbcType="BIGINT" />
+    <result column="receivePerson" property="receiveperson" jdbcType="BIGINT" />
+    <result column="sendTime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="roomId" property="roomid" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="sendType" property="sendtype" jdbcType="INTEGER" />
+    <result column="receiveType" property="receivetype" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.choose.Message.bean.PrivateMessage" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sendPerson, receivePerson, sendTime, roomId, state, sendType, receiveType
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from privatemessage
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from privatemessage
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.choose.Message.bean.PrivateMessage" >
+    insert into privatemessage (id, sendPerson, receivePerson, 
+      sendTime, roomId, state, 
+      sendType, receiveType, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{sendperson,jdbcType=BIGINT}, #{receiveperson,jdbcType=BIGINT}, 
+      #{sendtime,jdbcType=TIMESTAMP}, #{roomid,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{sendtype,jdbcType=INTEGER}, #{receivetype,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.choose.Message.bean.PrivateMessage" >
+    insert into privatemessage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sendperson != null" >
+        sendPerson,
+      </if>
+      <if test="receiveperson != null" >
+        receivePerson,
+      </if>
+      <if test="sendtime != null" >
+        sendTime,
+      </if>
+      <if test="roomid != null" >
+        roomId,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="sendtype != null" >
+        sendType,
+      </if>
+      <if test="receivetype != null" >
+        receiveType,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="sendperson != null" >
+        #{sendperson,jdbcType=BIGINT},
+      </if>
+      <if test="receiveperson != null" >
+        #{receiveperson,jdbcType=BIGINT},
+      </if>
+      <if test="sendtime != null" >
+        #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomid != null" >
+        #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sendtype != null" >
+        #{sendtype,jdbcType=INTEGER},
+      </if>
+      <if test="receivetype != null" >
+        #{receivetype,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.choose.Message.bean.PrivateMessage" >
+    update privatemessage
+    <set >
+      <if test="sendperson != null" >
+        sendPerson = #{sendperson,jdbcType=BIGINT},
+      </if>
+      <if test="receiveperson != null" >
+        receivePerson = #{receiveperson,jdbcType=BIGINT},
+      </if>
+      <if test="sendtime != null" >
+        sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomid != null" >
+        roomId = #{roomid,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sendtype != null" >
+        sendType = #{sendtype,jdbcType=INTEGER},
+      </if>
+      <if test="receivetype != null" >
+        receiveType = #{receivetype,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.choose.Message.bean.PrivateMessage" >
+    update privatemessage
+    set sendPerson = #{sendperson,jdbcType=BIGINT},
+      receivePerson = #{receiveperson,jdbcType=BIGINT},
+      sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      roomId = #{roomid,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      sendType = #{sendtype,jdbcType=INTEGER},
+      receiveType = #{receivetype,jdbcType=INTEGER},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.choose.Message.bean.PrivateMessage" >
+    update privatemessage
+    set sendPerson = #{sendperson,jdbcType=BIGINT},
+      receivePerson = #{receiveperson,jdbcType=BIGINT},
+      sendTime = #{sendtime,jdbcType=TIMESTAMP},
+      roomId = #{roomid,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      sendType = #{sendtype,jdbcType=INTEGER},
+      receiveType = #{receivetype,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!-- 批量添加私聊信息 -->
+  <insert id="bathAdd" parameterType="com.choose.Message.pojo.MessagePojo" >
+  	insert into privateMessage(sendPerson, receivePerson, sendTime, content, roomId, state, sendType, receiveType) values
+  	<foreach collection="addListMap" item="column" separator=",">  
+	  	(#{column.sendPerson},#{column.receivePerson},#{column.sendTime},#{column.content},#{column.roomId},
+	  	#{column.state},#{column.sendType},#{column.receiveType})
+  	</foreach>
+  </insert>
+</mapper>

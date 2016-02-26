@@ -1,0 +1,23 @@
+#------------\u6B64\u5904\u5B9A\u4E49\u6570\u636E\u5E93\u8FDE\u63A5------------#
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc\:mysql\://192.168.0.11\:3306/choose?useUnicode\=true&characterEncoding\=UTF-8&zeroDateTimeBehavior\=convertToNull
+jdbc.username=root
+jdbc.dbType=mysql
+jdbc.password=123
+jdbc.filters=stat
+jdbc.maxActive=10000
+jdbc.initialSize=3
+jdbc.maxWait=60000
+jdbc.minIdle=2
+jdbc.timeBetweenEvictionRunsMillis=60000
+jdbc.minEvictableIdleTimeMillis=300000
+jdbc.validationQuery=SELECT 'x'
+jdbc.testWhileIdle=true
+jdbc.testOnBorrow=false
+jdbc.testOnReturn=false
+jdbc.poolPreparedStatements=false
+jdbc.maxOpenPreparedStatements=20
+jdbc.removeAbandoned=true
+jdbc.removeAbandonedTimeout=1800
+jdbc.logAbandoned=true
+

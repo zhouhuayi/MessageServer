@@ -1,0 +1,19 @@
+package com.choose.Message.mapper;
+
+import com.choose.Message.bean.PrivateMessage;
+
+public interface PrivateMessageMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(PrivateMessage record);
+
+    int insertSelective(PrivateMessage record);
+
+    PrivateMessage selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(PrivateMessage record);
+
+    int updateByPrimaryKeyWithBLOBs(PrivateMessage record);
+
+    int updateByPrimaryKey(PrivateMessage record);
+}
